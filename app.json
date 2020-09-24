@@ -1,0 +1,12 @@
+{
+  "name": "CI/CD Voting",
+  "description": "A voting app made with Django",
+  "repository": "https://github.com/cpoenisch/cicd-voting",
+  "logo": "https://raw.githubusercontent.com/lfbatista/movies_project/master/templates/static/logo.png",
+  "keywords": [
+    "django",
+    "python",
+    "heroku",
+    "docker"
+  ]
+}
