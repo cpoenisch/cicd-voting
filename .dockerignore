@@ -1,5 +1,12 @@
 .git/
+.git*
+.env*
+.dockerignore
+.vscode
 Dockerfile
-Dockerfile.prod
-.env
-.idea
+docker-compose.yml
+staticfiles/
+venv/
+LICENSE
+Makefile
+README.md

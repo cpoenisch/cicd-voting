@@ -1,27 +1,16 @@
-FROM python:3.6.10-alpine
+FROM python:3.8.5-alpine
 
-# environment variables
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-# working dir
-RUN mkdir /code
-WORKDIR /code
+RUN apk update && \
+    apk add --no-cache postgresql-dev gcc python3-dev musl-dev
 
-# install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+WORKDIR /app
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY requirements.txt /code
-RUN pip install -r requirements.txt
+COPY . .
 
-# copy entrypoint.sh
-COPY entrypoint.sh /code/entrypoint.sh
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# copy project
-COPY . /code
-
-# run entrypoint
-ENTRYPOINT ["/code/entrypoint.sh"]
+ENTRYPOINT [ "/app/entrypoint.sh" ]

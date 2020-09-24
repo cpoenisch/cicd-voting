@@ -1,0 +1,36 @@
+{
+  "files.exclude": {
+    "**/*.pyc": true,
+    "**/__pycache__": true,
+  },
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.formatOnSave": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.rulers": [
+    120
+  ],
+  "python.linting.enabled": true,
+  "python.testing.promptToConfigure": false,
+  "python.workspaceSymbols.enabled": false,
+  "python.formatting.provider": "autopep8",
+  "python.linting.pylintEnabled": true,
+  "python.pythonPath": "venv\\Scripts\\python.exe",
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.rulers": [
+      100
+    ]
+  },
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  },
+  "[dockerfile]": {
+    "editor.tabSize": 4
+  },
+}

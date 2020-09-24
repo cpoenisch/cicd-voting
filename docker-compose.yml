@@ -1,12 +1,30 @@
-version: '3'
+version: "3.7"
 
 services:
-  web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
+  app:
+    image: "voting"
+    build:
+      context: .
+    container_name: "voting_app"
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
     ports:
-      - "8000:8000"  # change if necessary
+      - "8000:8000"
+    volumes:
+      - static_data:/app/staticfiles
     env_file:
-      - ./.env.dev
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: "postgres:12-alpine"
+    container_name: "voting_db"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+
+volumes:
+  postgres_data:
+  static_data:
