@@ -1,8 +1,10 @@
 import datetime
+
 from django.test import TestCase
-from django.utils import timezone
-from app.models import Question
 from django.urls import reverse
+from django.utils import timezone
+
+from app.models import Question
 
 
 # model tests
