@@ -3,6 +3,7 @@
 .env*
 .dockerignore
 .vscode
+db.sqlite3
 Dockerfile
 docker-compose.yml
 staticfiles/
