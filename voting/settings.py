@@ -111,6 +111,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Unit test reports
+
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_DIR = './test-reports'
+TEST_OUTPUT_FILE_NAME = 'unittest.xml'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -135,4 +141,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

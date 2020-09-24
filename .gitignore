@@ -4,4 +4,5 @@ __pycache
 .env.db
 db.sqlite3
 staticfiles/
+test-reports/
 venv/

@@ -6,8 +6,7 @@ pipeline {
     timeout(time: 10, unit: 'MINUTES')
   }
   agent {
-    docker { image 'python:3.8.5-alpine' }
-    //dockerfile { filename 'Dockerfile' }
+    dockerfile { filename 'Dockerfile' }
   }
   stages {
     stage('Checkout') {
@@ -20,7 +19,7 @@ pipeline {
         script {
           sh """
           python --version
-          pip install -r requirements.txt
+          pip install pylint unittest-xml-reporting
           """
         }
       }
@@ -29,10 +28,10 @@ pipeline {
       steps {
         script {
           sh """
-          pylint --rcfile=pylint.cfg app pages voting --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}"
-          recordIssues tool: pyLint(pattern: 'pylint.log')
+          pylint --rcfile=pylint.cfg --exit-zero app pages voting > pylint.log
           """
         }
+        recordIssues(tools: [pyLint(pattern: 'pylint.log')])
       }
     }
     stage('Unit Testing') {
@@ -42,6 +41,7 @@ pipeline {
           python ./manage.py test
           """
         }
+        junit 'test-reports/unittest.xml'
       }
     }
   }
