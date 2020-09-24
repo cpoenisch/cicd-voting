@@ -1,7 +1,6 @@
 pipeline {
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    ansiColor('xterm')
     timestamps()
     timeout(time: 10, unit: 'MINUTES')
   }
@@ -14,7 +13,7 @@ pipeline {
         checkout scm
       }
     }
-    stage('Setup') {
+    stage('Prepare') {
       steps {
         script {
           sh """
@@ -24,7 +23,7 @@ pipeline {
         }
       }
     }
-    stage('Linting') {
+    stage('Lint') {
       steps {
         script {
           sh """
@@ -34,7 +33,7 @@ pipeline {
         recordIssues(tools: [pyLint(pattern: 'pylint.log')])
       }
     }
-    stage('Unit Testing') {
+    stage('Unit Test') {
       steps {
         script {
           sh """
@@ -42,6 +41,21 @@ pipeline {
           """
         }
         junit 'test-reports/unittest.xml'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'heroku-git', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+          sh """
+          echo 'machine git.heroku.com \
+login ${GIT_USER} \
+password ${GIT_PASS}' > ~/.netrc
+          git remote add heroku https://git.heroku.com/cicd-voting.git
+          git remote -v
+          git checkout ${GIT_BRANCH}
+          git push heroku ${GIT_BRANCH}:master
+          """
+        }
       }
     }
   }
