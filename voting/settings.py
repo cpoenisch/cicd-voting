@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'voting.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if int(os.environ.get('USE_POSTGRES', default=0)):
+if int(os.environ.get('USE_POSTGRES', default=1)):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -83,8 +83,6 @@ if int(os.environ.get('USE_POSTGRES', default=0)):
             'PORT': os.getenv('POSTGRES_PORT', '5432'),
         }
     }
-    db_from_env = dj_database_url.config()
-    DATABASES['default'].update(db_from_env)
 else:
     DATABASES = {
         'default': {
@@ -92,6 +90,9 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

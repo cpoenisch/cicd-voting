@@ -1,7 +1,7 @@
 *.pyc
 __pycache
+.pytest_cache
 .env
-.env.db
 db.sqlite3
 staticfiles/
 test-reports/
