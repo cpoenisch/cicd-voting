@@ -6,7 +6,7 @@ on:
       - github-actions
 
 env:
-  IMAGE_ID: ghcr.io/${{ github.repository }}
+  IMAGE_ID: ghcr.io/${{ github.repository }}:latest
 
 jobs:
   build:
@@ -17,13 +17,13 @@ jobs:
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
           echo "Building and pushing $IMAGE_ID ..."
-          docker pull $IMAGE_ID:latest | true
-          docker build . -t $IMAGE_ID:$GITHUB_SHA -t $IMAGE_ID:latest --cache-from $IMAGE_ID:latest
-          docker push $IMAGE_ID:$GITHUB_SHA $IMAGE_ID:latest
+          docker pull $IMAGE_ID | true
+          docker build . -t $IMAGE_ID --cache-from $IMAGE_ID
+          docker push $IMAGE_ID
   lint:
     runs-on: ubuntu-latest
     container:
-      image: $IMAGE_ID:latest
+      image: $IMAGE_ID
     steps:
       - uses: actions/checkout@v2
       - name: prepare
@@ -35,7 +35,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: $IMAGE_ID:latest
+      image: $IMAGE_ID
     steps:
       - uses: actions/checkout@v2
       - name: pytest
