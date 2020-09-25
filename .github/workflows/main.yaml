@@ -16,7 +16,6 @@ jobs:
       - name: Publish Docker Image to GPR
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-          IMAGE_ID=ghcr.io/$GITHUB_REPOSITORY/$IMAGE_NAME
           docker pull $IMAGE_ID:latest
           docker build . --tag $IMAGE_ID:$GITHUB_SHA --cache-from $IMAGE_ID:latest
           docker push $IMAGE_ID:$GITHUB_SHA
