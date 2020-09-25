@@ -3,6 +3,7 @@ Django settings for voting project.
 """
 
 import os
+import sys
 import dj_database_url
 
 from django.core.management.utils import get_random_secret_key
@@ -72,7 +73,14 @@ WSGI_APPLICATION = 'voting.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if int(os.environ.get('USE_POSTGRES', default=1)):
+if 'test' in sys.argv or 'test_coverage' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:'
+        }
+    }
+elif int(os.environ.get('USE_POSTGRES', default=1)):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
