@@ -5,30 +5,56 @@ on:
     branches:
       - github-actions
 
+env:
+  IMAGE_ID: ghcr.io/$GITHUB_REPOSITORY
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Publish Docker Image to GPR
-        uses: machine-learning-apps/gpr-docker-publish@master
-        with:
-          IMAGE_NAME: 'cicd-voting'
-          DOCKERFILE_PATH: 'Dockerfile'
-          BUILD_CONTEXT: '.'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+          IMAGE_ID=ghcr.io/$GITHUB_REPOSITORY/$IMAGE_NAME
+          docker pull $IMAGE_ID:latest
+          docker build . --tag $IMAGE_ID:$GITHUB_SHA --cache-from $IMAGE_ID:latest
+          docker push $IMAGE_ID:$GITHUB_SHA
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: $IMAGE_ID:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          python --version
+          pip install pylint unittest-xml-reporting
+      - name: pylint
+        run: pylint --rcfile=pylint.cfg --exit-zero app pages voting
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: $IMAGE_ID:latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: pytest
+        run: python ./manage.py test
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.5.6
         with:
-          heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
-          heroku_app_name: "cicd-voting"
-          heroku_email: "awsler@protonmail.com"
-          branch: "github-actions"
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: cicd-voting
+          heroku_email: awsler@protonmail.com
+          branch: github-actions
         env:
-          HD_SECRET_KEY: "${{secrets.DJANGO_SECRET_KEY}}"
-          HD_DJANGO_SU_NAME: "admin"
-          HD_DJANGO_SU_EMAIL: "admin@localhost"
-          HD_DJANGO_SU_PASSWORD: "${{secrets.DJANGO_SU_PASSWORD}}"
-          HD_DJANGO_ALLOWED_HOSTS: "cicd-voting.herokuapp.com"
-          HD_USE_POSTGRES: "1"
-          HD_DEBUG: "0"
+          HD_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+          HD_DJANGO_SU_NAME: admin
+          HD_DJANGO_SU_EMAIL: admin@localhost
+          HD_DJANGO_SU_PASSWORD: ${{secrets.DJANGO_SU_PASSWORD}}
+          HD_DJANGO_ALLOWED_HOSTS: cicd-voting.herokuapp.com
+          HD_USE_POSTGRES: 1
+          HD_DEBUG: 0
