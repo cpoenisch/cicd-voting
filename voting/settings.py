@@ -15,10 +15,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = False
+# DEBUG = False
 DEBUG = int(os.environ.get('DEBUG', default=0))
 
-#ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', default='*').split(' ')
 
 # Application definition
@@ -155,4 +155,8 @@ STATICFILES_DIRS = [
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = (
+    'django.contrib.staticfiles.storage.StaticFilesStorage'
+    if ('test' in sys.argv or 'test_coverage' in sys.argv)
+    else 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+)
