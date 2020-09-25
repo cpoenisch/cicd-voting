@@ -1,2 +1,2 @@
-release: ./release-tasks.sh
+release: python manage.py migrate --no-input && python manage.py createsu
 web: python manage.py runserver 0.0.0.0:8000
