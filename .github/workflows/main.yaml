@@ -10,6 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Publish Docker Image to GPR
+        uses: machine-learning-apps/gpr-docker-publish@master
+        with:
+          IMAGE_NAME: 'cicd-voting'
+          DOCKERFILE_PATH: 'Dockerfile'
+          BUILD_CONTEXT: '.'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: akhileshns/heroku-deploy@v3.5.6
         with:
           heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
