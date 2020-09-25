@@ -58,6 +58,7 @@ test:
 
 deploy:
   stage: deploy
+  image: ubuntu:focal
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
