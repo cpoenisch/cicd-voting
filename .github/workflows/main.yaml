@@ -19,7 +19,7 @@ jobs:
           echo "Building and pushing $IMAGE_ID ..."
           docker pull $IMAGE_ID:latest | true
           docker build . -t $IMAGE_ID:$GITHUB_SHA -t $IMAGE_ID:latest --cache-from $IMAGE_ID:latest
-          docker push $IMAGE_ID:$GITHUB_SHA
+          docker push $IMAGE_ID:$GITHUB_SHA $IMAGE_ID:latest
   lint:
     runs-on: ubuntu-latest
     container:
