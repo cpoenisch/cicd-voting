@@ -50,9 +50,10 @@ pipeline {
           echo 'machine git.heroku.com \
 login ${GIT_USER} \
 password ${GIT_PASS}' > ~/.netrc
-          git remote add heroku https://git.heroku.com/cicd-voting.git
+          git remote add heroku https://git.heroku.com/cicd-voting.git | true
           git remote -v
           git checkout ${GIT_BRANCH}
+          git pull -v
           git push heroku ${GIT_BRANCH}:master
           """
         }
