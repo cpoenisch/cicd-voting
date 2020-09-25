@@ -23,6 +23,8 @@ ps:
 	docker-compose ps
 images:
 	docker-compose images
+flush:
+	docker-compose exec app python manage.py flush
 migrate:
 	docker-compose exec app python manage.py migrate
 collectstatic:
