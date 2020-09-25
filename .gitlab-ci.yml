@@ -1,0 +1,67 @@
+variables:
+  IMAGE_ID: $CI_REGISTRY_IMAGE:latest
+
+stages:
+  - build
+  - lint
+  - test
+  - deploy
+
+build:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  before_script:
+    - mkdir -p /kaniko/.docker
+    - >
+      echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}"
+      > /kaniko/.docker/config.json
+    - cp ca-cert-TraceTronic.crt /kaniko/ssl/certs/ca-cert-TraceTronic.crt
+  script:
+    - >
+      /kaniko/executor
+      --cache=true
+      --context $CI_PROJECT_DIR
+      --dockerfile $CI_PROJECT_DIR/Dockerfile
+      --destination $IMAGE_ID
+  tags:
+    - docker
+  only:
+    - gitlab-ci
+
+lint:
+  stage: lint
+  image: $IMAGE_ID
+  before_script:
+    - python --version
+    - pip install pylint
+  script:
+    - pylint --rcfile=pylint.cfg --exit-zero app pages voting
+  tags:
+    - docker
+  only:
+    - gitlab-ci
+
+test:
+  stage: test
+  image: $IMAGE_ID
+  before_script:
+    - python --version
+    - pip install unittest-xml-reporting
+  script:
+    - python ./manage.py test
+  tags:
+    - docker
+  only:
+    - gitlab-ci
+
+deploy:
+  stage: deploy
+  script:
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem install dpl
+    - dpl --provider=heroku --app=cicd-voting --api-key=$HEROKU_API_KEY
+  only:
+    - gitlab-ci

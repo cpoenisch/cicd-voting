@@ -3,6 +3,7 @@
 .env*
 .dockerignore
 .vscode
+*.crt
 db.sqlite3
 Dockerfile
 docker-compose.yml
