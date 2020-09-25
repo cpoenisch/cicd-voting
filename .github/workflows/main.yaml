@@ -1,0 +1,26 @@
+name: Pipeline
+
+on:
+  push:
+    branches:
+      - github-actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.5.6
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "cicd-voting"
+          heroku_email: "awsler@protonmail.com"
+          branch: "github-actions"
+        env:
+          HD_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
+          HD_DJANGO_SU_NAME: admin
+          DJANGO_SU_EMAIL: admin@localhost
+          DJANGO_SU_PASSWORD: ${{secrets.DJANGO_SU_PASSWORD}}
+          DJANGO_ALLOWED_HOSTS: cicd-voting.herokuapp.com
+          USE_POSTGRES: 1
+          DEBUG: 0
