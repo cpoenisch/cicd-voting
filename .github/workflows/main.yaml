@@ -12,15 +12,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.5.6
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
           heroku_app_name: "cicd-voting"
           heroku_email: "awsler@protonmail.com"
           branch: "github-actions"
         env:
-          HD_SECRET_KEY: ${{secrets.DJANGO_SECRET_KEY}}
-          HD_DJANGO_SU_NAME: admin
-          HD_DJANGO_SU_EMAIL: admin@localhost
-          HD_DJANGO_SU_PASSWORD: ${{secrets.DJANGO_SU_PASSWORD}}
-          HD_DJANGO_ALLOWED_HOSTS: cicd-voting.herokuapp.com
-          HD_USE_POSTGRES: 1
-          HD_DEBUG: 0
+          HD_SECRET_KEY: "${{secrets.DJANGO_SECRET_KEY}}"
+          HD_DJANGO_SU_NAME: "admin"
+          HD_DJANGO_SU_EMAIL: "admin@localhost"
+          HD_DJANGO_SU_PASSWORD: "${{secrets.DJANGO_SU_PASSWORD}}"
+          HD_DJANGO_ALLOWED_HOSTS: "cicd-voting.herokuapp.com"
+          HD_USE_POSTGRES: "1"
+          HD_DEBUG: "0"
