@@ -80,7 +80,7 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:
             'NAME': ':memory:'
         }
     }
-elif int(os.environ.get('USE_POSTGRES', default=1)):
+elif int(os.environ.get('USE_POSTGRES', default=0)):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
