@@ -27,7 +27,7 @@ jobs:
       - name: prepare
         run: |
           python --version
-          pip install pylint unittest-xml-reporting
+          pip install pylint
       - name: pylint
         run: pylint --rcfile=pylint.cfg --exit-zero app pages voting
   test:
@@ -36,6 +36,10 @@ jobs:
       image: ghcr.io/cpoenisch/cicd-voting:latest
     steps:
       - uses: actions/checkout@v2
+      - name: prepare
+        run: |
+          python --version
+          pip install unittest-xml-reporting
       - name: pytest
         run: python ./manage.py test
   deploy:
