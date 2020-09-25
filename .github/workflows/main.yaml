@@ -5,9 +5,6 @@ on:
     branches:
       - github-actions
 
-env:
-  IMAGE_ID: ghcr.io/${{ github.repository }}:latest
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +13,7 @@ jobs:
       - name: Publish Docker Image to GPR
         run: |
           echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+          IMAGE_ID=ghcr.io/${{ github.repository }}:latest
           echo "Building and pushing $IMAGE_ID ..."
           docker pull $IMAGE_ID | true
           docker build . -t $IMAGE_ID --cache-from $IMAGE_ID
@@ -23,7 +21,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     container:
-      image: $IMAGE_ID
+      image: ghcr.io/cpoenisch/cicd-voting:latest
     steps:
       - uses: actions/checkout@v2
       - name: prepare
@@ -35,7 +33,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: $IMAGE_ID
+      image: ghcr.io/cpoenisch/cicd-voting:latest
     steps:
       - uses: actions/checkout@v2
       - name: pytest
