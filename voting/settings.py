@@ -148,6 +148,10 @@ STATIC_URL = '/staticfiles/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 
