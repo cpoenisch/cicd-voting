@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: cicd-voting-image
+  namespace: tekton
+spec:
+  type: image
+  params:
+    - name: url
+      value: "trow.kube-public:31000/tekton/cicd-voting:latest"
+    - name: digest
+      value:

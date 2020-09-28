@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: cicd-voting-repo
+  namespace: tekton
+spec:
+  params:
+    - name: url
+      value: "https://github.com/cpoenisch/cicd-voting.git"
+    - name: revision
+      value: tekton
+  type: git

@@ -1,0 +1,50 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-and-deploy
+spec:
+  resources:
+  - name: git-repo-resource
+    type: git
+  - name: target-image-resource
+    type: image
+  params:
+  - name: deployment-name
+    type: string
+    description: name of the deployment to be patched
+  tasks:
+  - name: build-image
+    taskRef:
+      name: buildah-v0-8-0
+      kind: ClusterTask
+    resources:
+      inputs:
+      - name: source
+        resource: git-repo-resource
+      outputs:
+      - name: image
+        resource: target-image-resource
+    params:
+    - name: TLSVERIFY
+      value: "false"
+  - name: apply-manifests
+    taskRef:
+      name: apply-manifests
+    resources:
+      inputs:
+      - name: source
+        resource: git-repo-resource
+    runAfter:
+    - build-image
+  - name: update-deployment
+    taskRef:
+      name: update-deployment
+    resources:
+      inputs:
+      - name: image
+        resource: target-image-resource
+    params:
+    - name: deployment
+      value: $(params.deployment-name)
+    runAfter:
+    - apply-manifests
