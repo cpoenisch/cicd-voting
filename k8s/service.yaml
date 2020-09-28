@@ -5,7 +5,7 @@ metadata:
     app: cicd-voting
   name: cicd-voting
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - name: http
       port: 8000
