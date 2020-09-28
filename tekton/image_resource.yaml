@@ -6,6 +6,6 @@ spec:
   type: image
   params:
     - name: url
-      value: cpoenisch/cicd-voting
+      value: "ghcr.io/cpoenisch/cicd-voting:tekton"
     - name: digest
       value:
