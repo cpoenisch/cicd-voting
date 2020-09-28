@@ -54,7 +54,7 @@ password ${GIT_PASS}' > ~/.netrc
           git remote -v
           git checkout ${GIT_BRANCH}
           git pull -v
-          git push heroku ${GIT_BRANCH}:master
+          git push -f heroku ${GIT_BRANCH}:master
           """
         }
       }
