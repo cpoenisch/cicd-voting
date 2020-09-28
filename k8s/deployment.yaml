@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cicd-voting
+  name: cicd-voting
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cicd-voting
+  template:
+    metadata:
+      labels:
+        app: cicd-voting
+    spec:
+      containers:
+        - image: trow.kube-public:31000/tekton/cicd-voting:latest
+          imagePullPolicy: Always
+          name: cicd-voting
+          ports:
+            - containerPort: 8080
+              protocol: TCP
