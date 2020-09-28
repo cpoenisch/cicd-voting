@@ -3,7 +3,7 @@ kind: PipelineRun
 metadata:
   name: build-deploy-run
 spec:
-  serviceAccountName: docker-registry
+  serviceAccountName: docker-hub
   pipelineRef:
     name: build-deploy
   params:
