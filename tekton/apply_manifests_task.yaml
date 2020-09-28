@@ -7,7 +7,7 @@ spec:
     inputs:
       - { type: git, name: source }
   params:
-    - name: manifest_dir
+    - name: manifest-dir
       description: The directory in source that contains yaml manifests
       type: string
       default: "k8s"
@@ -18,6 +18,6 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - |-
-          echo Applying manifests in $(inputs.params.manifest_dir) directory
+          echo Applying manifests in $(inputs.params.manifest-dir) directory
           kubectl apply -f $(inputs.params.manifest_dir)
           echo -----------------------------------
