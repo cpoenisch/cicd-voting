@@ -18,8 +18,13 @@ spec:
         - image: cpoenisch/cicd-voting:latest
           imagePullPolicy: Always
           name: cicd-voting
+          command: ["/app/entrypoint.sh"]
+          args: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+          envFrom:
+            - configMapRef:
+                name: cicd-voting-config
           ports:
-            - containerPort: 8080
+            - containerPort: 8000
               protocol: TCP
           resources:
             limits:

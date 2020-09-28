@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cicd-voting-config
+data:
+  SECRET_KEY: change_me
+  DJANGO_SU_NAME: admin
+  DJANGO_SU_EMAIL: admin@localhost
+  DJANGO_SU_PASSWORD: admin
+  DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 [::1]
+  USE_POSTGRES: "0"
+  DEBUG: "0"
