@@ -5,14 +5,15 @@ metadata:
 spec:
   resources:
     inputs:
-      - { type: image, name: image }
+      - name: image
+        type: image
   params:
     - name: deployment
       description: The name of the deployment patch the image
       type: string
   steps:
     - name: patch
-      image: quay.io/openshift/origin-cli:latest
+      image: bitnami/kubectl:latest
       command: ["/bin/bash", "-c"]
       args:
         - |-

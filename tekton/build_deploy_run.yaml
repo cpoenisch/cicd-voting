@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-deploy-run
+spec:
+  serviceAccountName: docker-registry
+  pipelineRef:
+    name: build-deploy
+  params:
+    - name: deployment-name
+      value: cicd-voting
+  resources:
+    - name: git-repo-resource
+      resourceRef:
+        name: cicd-voting-repo
+    - name: target-image-resource
+      resourceRef:
+        name: cicd-voting-image

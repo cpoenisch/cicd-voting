@@ -15,9 +15,14 @@ spec:
         app: cicd-voting
     spec:
       containers:
-        - image: trow.kube-public:31000/tekton/cicd-voting:latest
+        - image: cpoenisch/cicd-voting:latest
           imagePullPolicy: Always
           name: cicd-voting
           ports:
             - containerPort: 8080
               protocol: TCP
+          resources:
+          limits:
+            cpu: 1
+          requests:
+            cpu: 0.5

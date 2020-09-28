@@ -26,10 +26,21 @@ spec:
       image: gcr.io/kaniko-project/executor:v1.0.0
       env:
         - name: "DOCKER_CONFIG"
-          value: "/tekton/home/.docker/"
+          value: "/kaniko/home/.docker/"
       command:
         - /kaniko/executor
       args:
+        - --cache=true
         - --context=$(params.context-path)
         - --dockerfile=$(params.dockerfile-path)
         - --destination=$(resources.outputs.built-image.url)
+      volumeMounts:
+        - name: docker-config
+          mountPath: "/kaniko/home/.docker/"
+  volumes:
+    - name: docker-config
+      secret:
+        secretName: docker-secret
+        items:
+          - key: .dockerconfigjson
+            path: config.json

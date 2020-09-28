@@ -2,7 +2,6 @@ apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
   name: cicd-voting-repo
-  namespace: tekton
 spec:
   params:
     - name: url

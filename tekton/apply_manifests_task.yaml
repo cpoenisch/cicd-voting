@@ -5,7 +5,8 @@ metadata:
 spec:
   resources:
     inputs:
-      - { type: git, name: source }
+      - name: source
+        type: git
   params:
     - name: manifest-dir
       description: The directory in source that contains yaml manifests
@@ -13,11 +14,11 @@ spec:
       default: "k8s"
   steps:
     - name: apply
-      image: quay.io/openshift/origin-cli:latest
+      image: bitnami/kubectl:latest
       workingDir: /workspace/source
       command: ["/bin/bash", "-c"]
       args:
         - |-
           echo Applying manifests in $(inputs.params.manifest-dir) directory
-          kubectl apply -f $(inputs.params.manifest_dir)
+          kubectl apply -f $(inputs.params.manifest-dir)
           echo -----------------------------------
